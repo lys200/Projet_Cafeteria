@@ -31,5 +31,26 @@ class Vente extends Model
     return $this->belongsTo(Plat::class);
    }
 
-   
+   /**
+     * Génération automatique du username et code si absent
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($vente) {
+
+            /**
+             * Génération automatique du code_client
+             */
+
+            // Générer le code_client si vide
+            if (empty($vente->code_vente)) {
+                $id = str_pad((string)(Vente::max('id') + 1), 3, '0', STR_PAD_LEFT);
+                $vente->code_vente = "Ve-" . $id;
+            }
+        });
+    }
+
+
 }

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('type_client', ['étudiant', 'professeur', 'personnel admin', 'invite']);
             $table->string('phone_client');
             $table->string('image');
+            $table ->string('username');
             $table->timestamps();
         });
     }

@@ -34,4 +34,24 @@ class Plat extends Model
         }
         return asset('images/default-plat.jpg');
     }
+    /**
+     * Génération automatique du  code si absent
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($plat) {
+
+            /**
+             * Génération automatique du code_client
+             */
+
+            // Générer le code_client si vide
+            if (empty($plat->code_plat)) {
+                $id = str_pad((string)(Plat::max('id') + 1), 3, '0', STR_PAD_LEFT);
+                $plat->code_plat = "Pl-" . $id;
+            }
+        });
+    }
 }

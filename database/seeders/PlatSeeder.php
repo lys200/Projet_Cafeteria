@@ -17,7 +17,7 @@ class PlatSeeder extends Seeder
         $plats = [
             [
                 'code_plat' => 'P001',
-                'nom_plat' => 'Poulet Grillée',
+                'nom_plat' => 'Poulet Grillé',
                 'cuisson' => 'Grillé',
                 'prix' => 250,
                 'quantite' => 50,
@@ -120,6 +120,6 @@ class PlatSeeder extends Seeder
         foreach ($plats as $plat) {
             Plat::create($plat);
         }
-    
+
     }
 }

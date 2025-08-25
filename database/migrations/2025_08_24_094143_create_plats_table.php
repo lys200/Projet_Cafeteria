@@ -19,6 +19,8 @@ return new class extends Migration
             $table->decimal('prix', 8, 2);
             $table->integer('quantite');
             $table->boolean('disponible_jour')->default(true);
+           $table->string('image')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

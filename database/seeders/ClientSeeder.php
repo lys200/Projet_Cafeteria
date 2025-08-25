@@ -99,7 +99,7 @@ class ClientSeeder extends Seeder
             ],
             [
                 'code_client' => 'C010',
-                'nom_client' => 'Dr. Claire Dubois',
+                'nom_client' => 'Dr. Claire',
                 'prenom_client' => 'Dubois',
                 'email' => 'clairedubois@gmail.com',
                 'type_client' => 'professeur',
