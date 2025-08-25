@@ -13,9 +13,13 @@ class Client extends Model
     protected $fillable = [
         'code_client',
         'nom_client',
+        'prenom_client',
+        'email',
         'type_client',
-        'phone_client'
-        'image'
+        'phone_client',
+        'image',
+        'username',
+        'image',
     ];
 
 // Accessor pour l'image par défaut
@@ -26,8 +30,8 @@ class Client extends Model
         }
         return asset('images/default-avatar.png');
     }
-    public function ventes()
+    public function vente()
     {
-        // return $this->hasMany(Vente::class);
+        return $this->hasMany(Vente::class);
     }
 }
