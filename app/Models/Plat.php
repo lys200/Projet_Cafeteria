@@ -14,11 +14,13 @@ class Plat extends Model
         'code_plat',
         'nom_plat',
         'cuisson',
+        'categorie',
         'prix',
         'quantite',
         'image',
         'description',
         'disponible_jour'
+        
     ];
 
     protected $casts = [

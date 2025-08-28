@@ -13,11 +13,22 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+<<<<<<< Updated upstream
     // route pour les plats
 Route::resource('plat', PlatController::class);
 // route pour les ventes
 Route::resource('vente', VenteController::class);
 
+=======
+//route pour plat
+Route::resource('plat', PlatController::class);
+
+
+// route pour les ventes
+Route::resource('vente', VenteController::class);
+
+
+>>>>>>> Stashed changes
 
 // route pour les clients
 Route::resource('client', ClientController::class);
