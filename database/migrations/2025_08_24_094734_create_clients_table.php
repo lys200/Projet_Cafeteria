@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('code_client')->unique();
             $table->string('nom_client');
             $table->string('prenom_client');
-            $table->string('email');
-            $table->enum('type_client', ['étudiant', 'professeur', 'personnel admin', 'invite']);
-            $table->string('phone_client');
-            $table->string('image');
-            $table ->string('username');
+            $table->string('email')->unique();
+            $table->enum('type_client', ['etudiant', 'professeur', 'personnel admin', 'invite']);
+            $table->string('phone_client')->unique();
+            $table ->string('username')->unique();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

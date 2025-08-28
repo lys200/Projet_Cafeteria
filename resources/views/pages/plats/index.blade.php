@@ -35,8 +35,8 @@
                 <td>{{$plat->disponible_jour}}</td>
                 <td>{{$plat->description}}</td>
                 <td>
-                    <a href="#">Modifier</a>|
-                    <a href="#">Supprimer</a>
+                    <a href="{{route('plat.edit', $plat->id)}}">Modifier</a> ||
+                    <a href="{{route('plat.destroy', $plat->id)}}">Supprimer</a>
 
                 </td>
 

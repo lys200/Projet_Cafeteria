@@ -11,14 +11,16 @@ class Client extends Model
     use HasFactory;
 
     protected $fillable = [
+
         'code_client',
         'nom_client',
         'prenom_client',
         'email',
         'type_client',
         'phone_client',
-        'image',
         'username',
+        'image',
+
     ];
     /**
      * Génération automatique du username et code si absent
@@ -35,13 +37,9 @@ class Client extends Model
 
                 $client->username = $nom . $prenom . $id;
             }
-
-
             /**
              * Génération automatique du code_client
              */
-
-
             // Générer le code_client si vide
             if (empty($client->code_client)) {
                 $id = str_pad((string)(Client::max('id') + 1), 3, '0', STR_PAD_LEFT);
