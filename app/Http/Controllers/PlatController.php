@@ -30,7 +30,7 @@ class PlatController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-        'nom_plat' => ['required','regex:/^[A-Za-z\s]+$/'],
+        'nom_plat' => 'required|regex:/^[A-Za-z\s]+$/',
         'cuisson' => 'required',
         'prix' => 'required|numeric',
         'quantite' => 'required|integer',
@@ -65,8 +65,8 @@ class PlatController extends Controller
     public function edit(string $id)
     {
     
-    $plat = Plat::findOrFail($id);
-    return view('pages.plats.edit', compact('plat'));
+        $plat = Plat::findOrFail($id);
+        return view('pages.plats.edit', compact('plat'));
 
     }
 
@@ -87,7 +87,7 @@ class PlatController extends Controller
 
     $plat->update([
     
-       'nom_plat' => ['required','regex:/^[A-Za-z\s]+$/'],
+       'nom_plat' => $request->nom_plat,
         'cuisson' => $request->cuisson,
         'prix' => $request->prix,
         'categorie' => $request->categorie,
