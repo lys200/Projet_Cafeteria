@@ -20,6 +20,9 @@
             <th>Telephone</th>
             <th>Username</th>
             <th>Image</th>
+            @if(auth() -> user() -> role === 'admin')
+                <th>Actions</th>
+            @endif
         </tr>
     </thead>
     <tbody>
@@ -33,12 +36,19 @@
             <td>{{$client->phone_client}}</td>
             <td>{{$client->username}}</td>
             <td>{{$client->image}}</td>
-            <td>
-                <a href="{{route('client.edit', $client->id)}}">Modifier</a> ||
-               <a href="{{ route('client.destroy', $client->id) }}"
-                    onclick="return confirm('Voulez-vous vraiment supprimer ce client ?')">
-                Supprimer</a>
-            </td>
+            @if(auth()-> user() -> role === 'admin')
+                <td>
+                    <a href="{{route('client.edit', $client->id)}}">Modifier</a> ||
+                    <form action="{{ route('client.destroy', $client->id) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer ce client ?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Supprimer</button>
+                    </form>
+                    {{-- <a href="{{ route('client.destroy', $client->id) }}"
+                        onclick="return confirm('Voulez-vous vraiment supprimer ce client ?')">
+                    Supprimer</a> --}}
+                </td>
+            @endif
         </tr>
         @endforeach
 

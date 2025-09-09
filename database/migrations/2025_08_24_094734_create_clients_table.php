@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->enum('type_client', ['etudiant', 'professeur', 'personnel admin', 'invite']);
             $table->string('phone_client')->unique();
-            $table ->string('username')->unique();
+            $table ->string('username')->unique()->nullable();
             $table->string('image')->nullable();
             $table->timestamps();
         });
