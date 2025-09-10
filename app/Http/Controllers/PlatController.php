@@ -21,7 +21,7 @@ class PlatController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.plats.create');
     }
 
     /**
@@ -29,7 +29,26 @@ class PlatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+        'nom_plat' => 'required|regex:/^[A-Za-z\s]+$/',
+        'cuisson' => 'required',
+        'prix' => 'required|numeric',
+        'quantite' => 'required|integer',
+        
+    ]);
+
+   $plat = Plat::create([
+       
+        'nom_plat' => $request->nom_plat,
+        'cuisson' => $request->cuisson,
+        'prix' => $request->prix,
+        'categorie' => $request->categorie,
+        'quantite' => $request->quantite,
+        'disponible_jour' => $request->has('disponible_jour'),
+        'description' => $request->description,
+    ]);
+
+    return redirect()->route('plat.index')->with('alert', "Ajout du plat {$plat->code_plat} fait avec succès !");
     }
 
     /**
@@ -45,7 +64,10 @@ class PlatController extends Controller
      */
     public function edit(string $id)
     {
-        //
+    
+        $plat = Plat::findOrFail($id);
+        return view('pages.plats.edit', compact('plat'));
+
     }
 
     /**
@@ -53,7 +75,28 @@ class PlatController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+         $plat = Plat::findOrFail($id);
+
+    $request->validate([
+        
+        'nom_plat' => 'required',
+        'cuisson' => 'required',
+        'prix' => 'required|numeric',
+        'quantite' => 'required|integer',
+    ]);
+
+    $plat->update([
+    
+       'nom_plat' => $request->nom_plat,
+        'cuisson' => $request->cuisson,
+        'prix' => $request->prix,
+        'categorie' => $request->categorie,
+        'quantite' => $request->quantite,
+        'disponible_jour' => $request->has('disponible_jour'),
+        'description' => $request->description,
+    ]);
+
+    return redirect()->route('plat.index')->with('alert', "Modification du plat {$plat->code_plat} fait avec succès !");;
     }
 
     /**
@@ -61,6 +104,9 @@ class PlatController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $plat = Plat::findOrFail($id);
+    $plat->delete();
+
+    return redirect()->route('plat.index')->with('alert', "Suppression  du plat {$plat->code_plat} fait avec succès !");;
     }
 }

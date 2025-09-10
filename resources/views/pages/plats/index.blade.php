@@ -1,3 +1,4 @@
+<<<<<<< HEAD
  @extends('pages.include.base')
 @section('titre')
 Plats
@@ -103,9 +104,29 @@ Gestion des Plats
     <a href="{{route('plat.create')}}">ajouter un plat</a>
 test
     <table>
-        <thead>
+=======
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des plats</title>
+</head>
+<body>
+    <h1>Liste des plats</h1>
+
+    <a href="{{ route('plat.create') }}">Ajouter un plat</a>
+
+    @if(session('success'))
+        <script>alert("{{ session('success') }}");</script>
+    @endif
+
+    <table border="1" cellpadding="5">
+>>>>>>> 79dd02419ecaeeb5ac2a5d2a24fec6d313a92cf3
+        <thead>
             <tr>
+<<<<<<< HEAD
             <th>Code</th>
             <th>Nom_Plat</th>
             <th>Cuisson</th>
@@ -114,28 +135,52 @@ test
             <th>Disponible</th>
             <th>Description</th>
             <th>Action</th>
+=======
+                 <th>Code_Plat</th>
+                <th>Nom_Plat</th>
+                <th>Cuisson</th>
+                <th>Prix</th>
+                <th>Categorie</th>
+                <th>Quantité</th>
+                <th>Disponible_jour</th>
+                <th>Description</th>
+                <th>Date_enre</th>
+                <th>Action</th>
+>>>>>>> 79dd02419ecaeeb5ac2a5d2a24fec6d313a92cf3
             </tr>
         </thead>
         <tbody>
             @foreach ($plats as $plat)
             <tr>
-                <td>{{$plat->code_plat}}</td>
-                <td>{{$plat->nom_plat}}</td>
-                <td>{{$plat->cuisson}}</td>
-                <td>{{$plat->prix}}</td>
-                <td>{{$plat->quantite}}</td>
-                <td>{{$plat->disponible_jour}}</td>
-                <td>{{$plat->description}}</td>
+                <td>{{ $plat->code_plat }}</td>
+                <td>{{ $plat->nom_plat }}</td>
+                <td>{{ $plat->cuisson }}</td>
+                <td>{{ $plat->prix }} $</td>
+                <td>{{ $plat->categorie }}</td>
+                <td>{{ $plat->quantite }}</td>
+                <td>{{ $plat->disponible_jour ? 'Oui' : 'Non' }}</td>
+                <td>{{ $plat->description }}</td>
+                <td>{{ $plat->create_at }}</td>
                 <td>
                     <a href="{{route('plat.edit', $plat->id)}}">Modifier</a> ||
-                    <a href="{{route('plat.destroy', $plat->id)}}">Supprimer</a>
-
+            
+<form action="{{ route('plat.destroy', $plat->id) }}" method="POST" style="display:inline" onsubmit="return confirm('Voulez-vous vraiment supprimer ce plat ?')">
+        @csrf
+        @method('DELETE')
+        <button type="submit">Supprimer</button>
+    </form>
                 </td>
-
             </tr>
             @endforeach
         </tbody>
     </table>
+<<<<<<< HEAD
 
 @endsection
  --}}
+=======
+</body>
+</html>
+
+
+>>>>>>> 79dd02419ecaeeb5ac2a5d2a24fec6d313a92cf3

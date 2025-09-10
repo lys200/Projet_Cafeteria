@@ -22,10 +22,23 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+<<<<<<< HEAD
 // route pour les plats
 Route::resource('plat', PlatController::class)->middleware(['auth']);
+=======
+
+    // route pour les plats
+Route::resource('plat', PlatController::class);
+>>>>>>> 79dd02419ecaeeb5ac2a5d2a24fec6d313a92cf3
 // route pour les ventes
 Route::resource('vente', VenteController::class)->middleware(['auth']);
+
+
+
+// route pour les ventes
+Route::resource('vente', VenteController::class);
+
+
 
 
 // route pour les clients
