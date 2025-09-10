@@ -1,3 +1,9 @@
+@if (session('success'))
+    <div>
+        {{session('success')}}
+    </div>
+
+@endif
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,15 +19,24 @@
         @csrf
         <div>
             <label for="nom">Nom Clients</label>
-            <input type="text" name="nom" placeholder="Entrez le nom" required>
+            <input type="text" name="nom" value="{{old('nom')}}" placeholder="Entrez le nom" required>
+            @error('nom')
+                <span>{{$message}}</span>
+            @enderror
         </div><br>
          <div>
             <label for="prenom">Prenom Clients</label>
-            <input type="text" name="prenom" placeholder="Entrez le prenom" required>
+            <input type="text" name="prenom" value="{{old('prenom')}}" placeholder="Entrez le prenom" required>
+            @error('prenom')
+                <span>{{$message}}</span>
+            @enderror
         </div><br>
          <div>
             <label for="email">Email</label>
-            <input type="email" name="email" placeholder="Entrez l'email" required>
+            <input type="email" name="email" value="{{old('email')}}" placeholder="Entrez l'email" required>
+            @error('email')
+                <span>{{$message}}</span>
+            @enderror
         </div><br>
           <div>
            {{-- type client --}}
@@ -36,12 +51,18 @@
         </div><br>
         <div>
             <label for="tel">Telephone</label>
-            <input type="text" name="tel" placeholder="Entrez le telephone" required>
+            <input type="text" name="tel" value="{{old('tel')}}" placeholder="Entrez le telephone" required>
+            @error('tel')
+                <span>{{$message}}</span>
+            @enderror
         </div><br>
 
          <div>
            <label for="username">Nom d'utilisateur</label>
            <input type="text" name="username" placeholder="Entrez le nom d'utilisateur">
+            @error('username')
+                <span>{{$message}}</span>
+            @enderror
         </div><br>
         <div>
             <label for="image">Image</label>
