@@ -1,39 +1,11 @@
- @extends('pages.include.base')
-@section('titre')
-Plats
-@endsection
-@section('titre_page')
-Gestion des Plats
-@endsection 
+@extends('pages.include.base')
 
-
-
-
+@section('title', 'Accueil - Cafet CHC')
 
 @section('content')
-
-<div class="p-6">
-    <h2 class="text-xl font-bold mb-4">Test des couleurs</h2>
-    
-    <div class="grid grid-cols-5 gap-4 mb-6">
-        @foreach(['50', '100', '200', '300', '400', '500', '600', '700', '800', '900'] as $shade)
-        <div class="bg-primary-{{ $shade }} p-4 text-center text-white">
-            primary-{{ $shade }}
-        </div>
-        @endforeach
-    </div>
-    
-    <div class="grid grid-cols-5 gap-4 mb-6">
-        @foreach(['50', '100', '200', '300', '400', '500', '600', '700', '800', '900'] as $shade)
-        <div class="bg-secondary-{{ $shade }} p-4 text-center text-white">
-            secondary-{{ $shade }}
-        </div>
-        @endforeach
-    </div>
-</div>
 <div class="container mx-auto px-4 py-8">
     <div class="text-center mb-8">
-        {{-- <h1 class="text-3xl font-bold text-primary-600 mb-2">Bienvenue à la Cafet CHC</h1> --}}
+        <h1 class="text-3xl font-bold text-primary-600 mb-2">Bienvenue à la Cafet CHC</h1>
         <p class="text-gray-600">Découvrez nos délicieux plats du jour</p>
     </div>
 
@@ -63,8 +35,7 @@ Gestion des Plats
                     @auth
                         @if(Auth::user()->isAdmin())
                         <div class="flex space-x-2">
-                    {{-- <a href="{{route('plat.destroy', $plat->id)}}">Supprimer</a> --}}
-                            <a href="{{ route('plat.edit', $plat->id) }}" class="text-blue-600 hover:text-blue-800">
+                            <a href="{{ route('plats.edit', $plat->id) }}" class="text-blue-600 hover:text-blue-800">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                 </svg>
@@ -94,48 +65,3 @@ Gestion des Plats
     @endguest
 </div>
 @endsection
-
-
-
-{{--
-@section('content')
-    <h1>Liste des plats</h1>
-    <a href="{{route('plat.create')}}">ajouter un plat</a>
-test
-    <table>
-        <thead>
-
-            <tr>
-            <th>Code</th>
-            <th>Nom_Plat</th>
-            <th>Cuisson</th>
-            <th>Prix</th>
-            <th>Quantité </th>
-            <th>Disponible</th>
-            <th>Description</th>
-            <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($plats as $plat)
-            <tr>
-                <td>{{$plat->code_plat}}</td>
-                <td>{{$plat->nom_plat}}</td>
-                <td>{{$plat->cuisson}}</td>
-                <td>{{$plat->prix}}</td>
-                <td>{{$plat->quantite}}</td>
-                <td>{{$plat->disponible_jour}}</td>
-                <td>{{$plat->description}}</td>
-                <td>
-                    <a href="{{route('plat.edit', $plat->id)}}">Modifier</a> ||
-                    <a href="{{route('plat.destroy', $plat->id)}}">Supprimer</a>
-
-                </td>
-
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-@endsection
- --}}
