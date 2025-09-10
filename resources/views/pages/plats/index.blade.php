@@ -44,8 +44,12 @@
                 <td>{{ $plat->create_at }}</td>
                 <td>
                     <a href="{{route('plat.edit', $plat->id)}}">Modifier</a> ||
-                    <a href="#">Supprimer</a>
-
+            
+<form action="{{ route('plat.destroy', $plat->id) }}" method="POST" style="display:inline" onsubmit="return confirm('Voulez-vous vraiment supprimer ce plat ?')">
+        @csrf
+        @method('DELETE')
+        <button type="submit">Supprimer</button>
+    </form>
                 </td>
             </tr>
             @endforeach
@@ -53,3 +57,5 @@
     </table>
 </body>
 </html>
+
+

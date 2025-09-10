@@ -47,6 +47,6 @@
     </form>
 
     <br>
-    <a href="{{ route('plat.index') }}">⬅ Retour à la liste</a>
+    <a href="{{ route('plat.index') }}">⬅ Retour à la liste </a>
 </body>
 </html>

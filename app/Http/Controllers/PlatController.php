@@ -107,6 +107,6 @@ class PlatController extends Controller
         $plat = Plat::findOrFail($id);
     $plat->delete();
 
-    return redirect()->route('plat.index');
+    return redirect()->route('plat.index')->with('alert', "Suppression  du plat {$plat->code_plat} fait avec succès !");;
     }
 }
