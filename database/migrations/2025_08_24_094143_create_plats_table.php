@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('code_plat')->unique();
             $table->string('nom_plat');
+            $table->string('image')->nullable();
             $table->enum('cuisson', ['Cru', 'Cuit', 'Grillé']);
             $table->decimal('prix', 8, 2);
+            $table->enum('categorie',['Dejeuner','Diner','dessert','boisson','snack']);
             $table->integer('quantite');
             $table->boolean('disponible_jour')->default(true);
-           $table->string('image')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
         });

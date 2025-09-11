@@ -34,12 +34,22 @@ class PlatController extends Controller
         'cuisson' => 'required',
         'prix' => 'required|numeric',
         'quantite' => 'required|integer',
-        
+        'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',    
     ]);
+    // imaj
+     $imageName = null;
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $imageName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('images/plats'), $imageName);
+        }
+
 
    $plat = Plat::create([
        
         'nom_plat' => $request->nom_plat,
+         'image' => request->$ImageName,
         'cuisson' => $request->cuisson,
         'prix' => $request->prix,
         'categorie' => $request->categorie,
@@ -88,6 +98,7 @@ class PlatController extends Controller
     $plat->update([
     
        'nom_plat' => $request->nom_plat,
+       'image' => $request->image,
         'cuisson' => $request->cuisson,
         'prix' => $request->prix,
         'categorie' => $request->categorie,

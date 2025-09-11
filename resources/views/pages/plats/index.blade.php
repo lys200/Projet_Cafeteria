@@ -20,13 +20,14 @@
             <tr>
                  <th>Code_Plat</th>
                 <th>Nom_Plat</th>
+                <th>Image</th>
                 <th>Cuisson</th>
                 <th>Prix</th>
                 <th>Categorie</th>
                 <th>Quantité</th>
                 <th>Disponible_jour</th>
                 <th>Description</th>
-                <th>Date_enre</th>
+                <th>Date</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -35,13 +36,22 @@
             <tr>
                 <td>{{ $plat->code_plat }}</td>
                 <td>{{ $plat->nom_plat }}</td>
+                <td>
+        @if($plat->image)
+         <img src="{{ asset('images/plats/' . $plat->image) }}"  width="100">
+       @else
+        Aucune image
+       @endif
+        </td>
+
+                <!--td>{{ $plat->image}}</td--->
                 <td>{{ $plat->cuisson }}</td>
-                <td>{{ $plat->prix }} $</td>
+                <td>{{ $plat->prix }} gourdes</td>
                 <td>{{ $plat->categorie }}</td>
                 <td>{{ $plat->quantite }}</td>
                 <td>{{ $plat->disponible_jour ? 'Oui' : 'Non' }}</td>
                 <td>{{ $plat->description }}</td>
-                <td>{{ $plat->create_at }}</td>
+                <td>{{ $plat->created_at }}</td>
                 <td>
                     <a href="{{route('plat.edit', $plat->id)}}">Modifier</a> ||
             

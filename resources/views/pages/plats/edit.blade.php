@@ -15,6 +15,19 @@
         <label>Nom Plat :</label>
         <input type="text" name="nom_plat" value="{{ old('nom_plat', $plat->nom_plat) }}" 
                required pattern="[A-Za-zÀ-ÿ\s]+" title="Seulement des lettres"><br><br>
+               
+               <!--label for="image">Image<</label>
+        <input type="text" name="image">Inserer l'image</input-->
+        <label>Image actuelle :</label><br>
+    @if($plat->image)
+        <img src="{{ asset('images/plats/' . $plat->image) }}" alt="Image du plat" width="150"><br><br>
+    @else
+        <span>Aucune image</span><br><br>
+    @endif
+
+    <label>Changer l'image :</label>
+    <input type="file" name="image" accept="image/*"><br><br>
+
 
         <label>Cuisson :</label>
         <select name="cuisson" required>
@@ -43,6 +56,7 @@
 
         <label>Description :</label>
         <textarea name="description">{{ old('description', $plat->description) }}</textarea><br><br>
+        
 
         <button type="submit">Mettre à jour</button>
     </form>
