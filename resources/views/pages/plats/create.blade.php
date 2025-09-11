@@ -9,12 +9,15 @@ Ajouter un plat
 @section('content')
 
 
-    <form action="{{ route('plat.store') }}" method="POST">
+    <form action="{{ route('plat.store') }}" method="POST"    enctype="multipart/form-data">
         @csrf
 
         <label>Nom Plat :</label>
         <input type="text" name="nom_plat" value="{{ old('nom_plat') }}" 
                required pattern="[A-Za-zÀ-ÿ\s]+" title="Seulement des lettres"><br><br>
+
+      <label>Image :</label>
+    <input type="file" name="image" accept="image/*"><br>
 
         <label>Cuisson :</label>
         <select name="cuisson" required>
@@ -44,8 +47,6 @@ Ajouter un plat
         <label>Description :</label>
         <textarea name="description">{{ old('description') }}</textarea><br><br>
 
-        {{-- <label for="image">Image: </label>
-        <input type="file"> <br> --}}
 
         <button type="submit">Enregistrer</button>
     </form>
