@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class VenteController extends Controller
 {
@@ -12,6 +13,7 @@ class VenteController extends Controller
     public function index()
     {
         //
+        return View('pages.ventes.index');
     }
 
     /**

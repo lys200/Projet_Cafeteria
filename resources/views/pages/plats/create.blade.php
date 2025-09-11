@@ -1,12 +1,13 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter un plat</title>
-</head>
-<body>
-    <h1>Ajouter un plat</h1>
+@extends('pages.include.base')
+@section('title')
+Gestion Plats
+@endsection
+@section('titre_page')
+Ajouter un plat
+@endsection
+    
+@section('content')
+
 
     <form action="{{ route('plat.store') }}" method="POST">
         @csrf
@@ -43,10 +44,12 @@
         <label>Description :</label>
         <textarea name="description">{{ old('description') }}</textarea><br><br>
 
+        {{-- <label for="image">Image: </label>
+        <input type="file"> <br> --}}
+
         <button type="submit">Enregistrer</button>
     </form>
 
     <br>
     <a href="{{ route('plat.index') }}">⬅ Retour à la liste </a>
-</body>
-</html>
+@endsection

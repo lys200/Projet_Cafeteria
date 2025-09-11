@@ -1,3 +1,11 @@
+
+@extends('pages.include.base')
+@section('title')
+Gestion Clients
+@endsection
+@section('titre_page')
+Formulaire de modification
+@endsection
 @if ($errors->any())
     <div style="color: red;">
         <ul>
@@ -7,17 +15,8 @@
         </ul>
     </div>
 @endif
+@section('content')
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Modifier les informations du client</title>
-</head>
-<body>
-    <h1>Formulaire de modification</h1>
     <form action="{{route('client.update', $client->id)}}" method="post">
         @csrf
         @method('put')
@@ -41,5 +40,4 @@
         <div>
             <button type="submit"> ModifierClient </button>
         </div><br>
-</body>
-</html>
+@endsection

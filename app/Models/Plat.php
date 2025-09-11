@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Plat extends Model
 {
-     use HasFactory;
+    use HasFactory;
 
     protected $fillable = [
         'code_plat',
@@ -20,7 +20,7 @@ class Plat extends Model
         'image',
         'description',
         'disponible_jour'
-        
+
     ];
 
     protected $casts = [
@@ -28,14 +28,14 @@ class Plat extends Model
         'disponible_jour' => 'boolean'
     ];
 
-      // Accessor pour l'image par défaut
-    public function getImageUrlAttribute()
-    {
-        if ($this->image) {
-            return asset('storage/images/plats/' . $this->image);
-        }
-        return asset('images/default-plat.jpg');
-    }
+    // Accessor pour l'image par défaut
+    // public function getImageUrlAttribute()
+    // {
+    //     if ($this->image) {
+    //         return asset('storage/images/plats/' . $this->image);
+    //     }
+    //     return asset('images/default-plat.jpg');
+    // }
     /**
      * Génération automatique du  code si absent
      */
@@ -51,9 +51,27 @@ class Plat extends Model
 
             // Générer le code_client si vide
             if (empty($plat->code_plat)) {
-                $id = str_pad((string)(Plat::max('id') + 1), 3, '0', STR_PAD_LEFT);
+                $id = str_pad((string) (Plat::max('id') + 1), 3, '0', STR_PAD_LEFT);
                 $plat->code_plat = "Pl-" . $id;
             }
         });
+    }
+
+    public function getImageUrlAttribute()
+    {
+        if ($this->image) {
+            // Vérifie si l'image existe dans le storage
+            if (Storage::disk('public')->exists('images/plats/' . $this->image)) {
+                return asset('storage/images/plats/' . $this->image);
+            }
+
+            // Si c'est une URL complète (pour les seeds)
+            if (filter_var($this->image, FILTER_VALIDATE_URL)) {
+                return $this->image;
+            }
+        }
+
+        // Image par défaut
+        return asset('images/default-plat.jpg');
     }
 }

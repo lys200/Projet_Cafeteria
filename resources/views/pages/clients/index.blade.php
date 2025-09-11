@@ -1,12 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Affichage </title>
-</head>
-<body>
+@extends('pages.include.base')
+@section('title')
+Gestion Clients
+@endsection
+@section('titre_page')
+Gestion des Clients
+@endsection
+
+@section('content')
+
     <a href="{{ route('client.create') }}">Ajouter un client</a>
 
    <table>
@@ -54,5 +55,4 @@
 
     </tbody>
    </table>
-</body>
-</html>
+@endsection

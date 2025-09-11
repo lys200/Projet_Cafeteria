@@ -1,19 +1,18 @@
+@extends('pages.include.base')
+@section('title')
+Gestion Clients
+@endsection
+@section('titre_page')
+Formulaire de Saisie de Clients
+@endsection
 @if (session('success'))
     <div>
         {{session('success')}}
     </div>
 
 @endif
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Formulaire Clients</title>
-</head>
-<body>
-    <h1>Formulaire de Saisie de Clients</h1>
+@section('content')
+
     {{-- formulaire de saisie des infos sur le client  --}}
     <form action="{{route('client.store')}}" method="post">
         @csrf
@@ -73,5 +72,4 @@
             <button type="submit">Enregistrer_Client</button>
         </div><br>
     </form>
-</body>
-</html>
+@endsection

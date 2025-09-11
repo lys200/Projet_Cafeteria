@@ -22,6 +22,10 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'photo',
+        'bio',
+        'force_password_change'
+
     ];
 
     /**
@@ -44,6 +48,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'force_password_change' => 'boolean'
+
         ];
     }
     public function isAdmin()
@@ -54,5 +60,15 @@ class User extends Authenticatable
     public function isUser()
     {
         return $this->role === 'user';
+    }
+
+
+    // méthode pour l'URL de la photo
+    public function getPhotoUrlAttribute()
+    {
+        if ($this->photo) {
+            return asset('storage/images/users/' . $this->photo);
+        }
+        return asset('images/default-avatar.png');
     }
 }
