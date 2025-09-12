@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 
 
 class Plat extends Model
@@ -60,8 +61,13 @@ class Plat extends Model
     public function getImageUrlAttribute()
     {
         if ($this->image) {
-            // Vérifie si l'image existe dans le storage
+            // Vérifie si l'image existe dans le storage public
             if (Storage::disk('public')->exists('images/plats/' . $this->image)) {
+                return Storage::disk('public')->url('images/plats/' . $this->image);
+            }
+
+            // Vérifie si l'image existe dans le storage app (ancienne méthode)
+            if (Storage::exists('public/images/plats/' . $this->image)) {
                 return asset('storage/images/plats/' . $this->image);
             }
 

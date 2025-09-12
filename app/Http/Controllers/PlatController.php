@@ -4,17 +4,67 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Plat;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class PlatController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-
-    public function index()
+    public function index(Request $request)
     {
-        $plats = Plat::where('disponible_jour', true)->get();
-        return view('pages.plats.index', compact('plats'));
+        $query = Plat::query();
+        
+        // Filtres
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where('nom_plat', 'like', '%' . $request->search . '%');
+        }
+        
+        if ($request->has('categorie') && $request->categorie !== 'all') {
+            $query->where('categorie', $request->categorie);
+        }
+        
+        if ($request->has('disponible') && $request->disponible !== 'all') {
+            $query->where('disponible_jour', $request->disponible);
+        }
+        
+        // Tri
+        if ($request->has('sort')) {
+            switch ($request->sort) {
+                case 'ancien':
+                    $query->orderBy('created_at', 'asc');
+                    break;
+                case 'prix_asc':
+                    $query->orderBy('prix', 'asc');
+                    break;
+                case 'prix_desc':
+                    $query->orderBy('prix', 'desc');
+                    break;
+                case 'quantite_asc':
+                    $query->orderBy('quantite', 'asc');
+                    break;
+                case 'quantite_desc':
+                    $query->orderBy('quantite', 'desc');
+                    break;
+                default:
+                    $query->orderBy('created_at', 'desc');
+                    break;
+            }
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+        
+        $plats = $query->get();
+        $categories = Plat::select('categorie')->distinct()->pluck('categorie');
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('pages.plats.partials.plats-grid', compact('plats'))->render()
+            ]);
+        }
+
+        return view('pages.plats.index', compact('plats', 'categories'));
     }
 
     /**
@@ -28,121 +78,128 @@ class PlatController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-
-
     public function store(Request $request)
     {
-        $request->validate([
-            'code_plat' => 'required|unique:plats',
-            'nom_plat' => 'required',
+        $validator = Validator::make($request->all(), [
+            'nom_plat' => 'required|unique:plats,nom_plat|regex:/^[A-Za-zÀ-ÿ\s]+$/',
             'cuisson' => 'required|in:Cru,Cuit,Grillé',
             'prix' => 'required|numeric|min:0',
+            'categorie' => 'required|in:dejeuner,diner,dessert,boisson,snack',
             'quantite' => 'required|integer|min:0',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:500',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ], [
+            'nom_plat.unique' => 'Ce plat existe déjà. Veuillez le modifier plutôt que de créer un doublon.',
+            'nom_plat.regex' => 'Le nom du plat ne doit contenir que des lettres et des espaces.',
         ]);
+
+        if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json(['errors' => $validator->errors()], 422);
+            }
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         $data = $request->all();
 
         // Gestion de l'upload d'image
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-
-            // Stockage dans public/storage/images/plats
-            $image->storeAs('public/images/plats', $imageName);
+            // Génération d'un nom unique avec extension
+            $imageName = uniqid() . '_' . time() . '.' . $image->getClientOriginalExtension();
+            
+            // Stockage dans le dossier storage/images/plats
+            $image->move(storage_path('app/public/images/plats'), $imageName);
             $data['image'] = $imageName;
         }
 
-        Plat::create($data);
+        // Génération du code plat automatique
+        $data['code_plat'] = 'P' . strtoupper(substr($data['nom_plat'], 0, 3)) . date('His');
 
-        return redirect()->route('pages.plats.index')
-            ->with('success', 'Plat créé avec succès.');
+        $plat = Plat::create($data);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => 'Plat créé avec succès.', 
+                'plat' => $plat
+            ]);
+        }
+
+        return redirect()->route('plats.index')->with('success', 'Plat créé avec succès.');
     }
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'nom_plat' => 'required|regex:/^[A-Za-z\s]+$/',
-    //         'cuisson' => 'required',
-    //         'prix' => 'required|numeric',
-    //         'quantite' => 'required|integer',
 
-    //     ]);
-
-    //     $plat = Plat::create([
-
-    //         'nom_plat' => $request->nom_plat,
-    //         'cuisson' => $request->cuisson,
-    //         'prix' => $request->prix,
-    //         'categorie' => $request->categorie,
-    //         'quantite' => $request->quantite,
-    //         'disponible_jour' => $request->has('disponible_jour'),
-    //         'description' => $request->description,
-    //     ]);
-
-    //     return redirect()->route('plat.index')->with('alert', "Ajout du plat {$plat->code_plat} fait avec succès !");
-    // }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Plat $plat)
     {
-        //
+        return response()->json($plat);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Plat $plat)
     {
-
-        $plat = Plat::findOrFail($id);
-        return view('pages.plats.edit', compact('plat'));
-
+        return response()->json($plat);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Plat $plat)
     {
-        $plat = Plat::findOrFail($id);
-
-        $request->validate([
-
-            'nom_plat' => 'required',
-            'cuisson' => 'required',
-            'prix' => 'required|numeric',
-            'quantite' => 'required|integer',
+        $validator = Validator::make($request->all(), [
+            'nom_plat' => 'required|unique:plats,nom_plat,' . $plat->id . '|regex:/^[A-Za-zÀ-ÿ\s]+$/',
+            'cuisson' => 'required|in:Cru,Cuit,Grillé',
+            'prix' => 'required|numeric|min:0',
+            'categorie' => 'required|in:dejeuner,diner,dessert,boisson,snack',
+            'quantite' => 'required|integer|min:0',
+            'description' => 'nullable|string|max:500',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ], [
+            'nom_plat.unique' => 'Ce nom de plat est déjà utilisé.',
+            'nom_plat.regex' => 'Le nom du plat ne doit contenir que des lettres et des espaces.',
         ]);
 
-        $plat->update([
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
-            'nom_plat' => $request->nom_plat,
-            'cuisson' => $request->cuisson,
-            'prix' => $request->prix,
-            'categorie' => $request->categorie,
-            'quantite' => $request->quantite,
-            'disponible_jour' => $request->has('disponible_jour'),
-            'description' => $request->description,
+        $data = $request->all();
+
+        // Gestion de l'upload d'image
+        if ($request->hasFile('image')) {
+            // Supprimer l'ancienne image si elle existe
+            if ($plat->image && file_exists(storage_path('app/public/images/plats/' . $plat->image))) {
+                unlink(storage_path('app/public/images/plats/' . $plat->image));
+            }
+
+            $image = $request->file('image');
+            // Génération d'un nom unique avec extension
+            $imageName = uniqid() . '_' . time() . '.' . $image->getClientOriginalExtension();
+            
+            // Stockage dans le dossier storage/images/plats
+            $image->move(storage_path('app/public/images/plats'), $imageName);
+            $data['image'] = $imageName;
+        }
+
+        $plat->update($data);
+
+        return response()->json([
+            'success' => 'Plat mis à jour avec succès.'
         ]);
-
-        return redirect()->route('plat.index')->with('alert', "Modification du plat {$plat->code_plat} fait avec succès !");
-        ;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Plat $plat)
     {
-        $plat = Plat::findOrFail($id);
+        // Supprimer l'image associée
+        if ($plat->image && file_exists(storage_path('app/public/images/plats/' . $plat->image))) {
+            unlink(storage_path('app/public/images/plats/' . $plat->image));
+        }
+
         $plat->delete();
-
-        return redirect()->route('plat.index')->with('alert', "Suppression  du plat {$plat->code_plat} fait avec succès !");
-        ;
+        
+        return response()->json(['success' => 'Plat supprimé avec succès.']);
     }
-
-
 }

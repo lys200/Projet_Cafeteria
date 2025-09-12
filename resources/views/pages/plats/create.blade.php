@@ -9,7 +9,7 @@ Ajouter un plat
 @section('content')
 
 
-    <form action="{{ route('plat.store') }}" method="POST"    enctype="multipart/form-data">
+    <form action="{{ route('plats.store') }}" method="POST"    enctype="multipart/form-data">
         @csrf
 
         <label>Nom Plat :</label>
@@ -52,5 +52,5 @@ Ajouter un plat
     </form>
 
     <br>
-    <a href="{{ route('plat.index') }}">⬅ Retour à la liste </a>
+    <a href="{{ route('plats.index') }}">⬅ Retour à la liste </a>
 @endsection

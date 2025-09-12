@@ -26,7 +26,13 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // route pour les plats
-Route::resource('plat', PlatController::class)->middleware(['auth']);
+Route::resource('plats', PlatController::class)->middleware(['auth']);
+
+// Route::middleware(['auth', AdminMiddleware::class])->group(function () {
+//     Route::resource('plats', PlatController::class)->except(['show', 'edit']);
+//     Route::get('/plats/{plat}', [PlatController::class, 'show'])->name('plats.show');
+//     Route::get('/plats/{plat}/edit', [PlatController::class, 'edit'])->name('plats.edit');
+// });
 // route pour les ventes
 Route::resource('vente', VenteController::class)->middleware(['auth']);
 
@@ -49,7 +55,17 @@ Route::middleware(['auth'])->group(function () {
 
 
 // route pour les clients
-Route::resource('client', ClientController::class)->middleware(['auth']);
+// Route::resource('client', ClientController::class)->middleware(['auth']);
+
+Route::resource('clients', ClientController::class);
+// ou
+Route::get('/clients', [ClientController::class, 'index'])->name('client.index');
+Route::get('/clients/{client}', [ClientController::class, 'show'])->name('client.show');
+Route::get('/clients/{client}/edit', [ClientController::class, 'edit'])->name('client.edit');
+Route::put('/clients/{client}', [ClientController::class, 'update'])->name('client.update');
+Route::delete('/clients/{client}', [ClientController::class, 'destroy'])->name('client.destroy');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

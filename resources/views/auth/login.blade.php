@@ -24,21 +24,23 @@
         </div>
 
         <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
+        <div class="block mt-4 text-sm">
+            Vous n'avez pas de compte? 
+            <a class="text-primary hover:underline hover:text-accent" href="{{ route('register') }}">Creer un compte</a>
+            {{-- <label for="remember_me" class="inline-flex items-center">
                 <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-primary-600 shadow-sm focus:ring-primary-500" name="remember">
                 <span class="ml-2 text-sm text-gray-600">{{ __('Se souvenir de moi') }}</span>
-            </label>
+            </label> --}}
         </div>
 
         <div class="flex items-center justify-between mt-4">
             @if (Route::has('password.request'))
-                <a class="underline text-sm text-primary-600 hover:text-primary-500 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" href="{{ route('password.request') }}">
+                <a class="underline text-sm text-primary-600 hover:text-primary rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" href="{{ route('password.request') }}">
                     {{ __('Mot de passe oublié?') }}
                 </a>
             @endif
 
-            <x-primary-button class="ml-3 bg-primary-500 hover:bg-primary-600 focus:bg-primary-600 active:bg-primary-700">
+            <x-primary-button class="ml-3 bg-primary hover:bg-accent focus:bg-primary active:bg-primary">
                 {{ __('Se connecter') }}
             </x-primary-button>
         </div>

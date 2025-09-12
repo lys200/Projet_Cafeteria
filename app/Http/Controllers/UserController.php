@@ -62,7 +62,7 @@ class UserController extends Controller
         ]);
 
         $message = 'Utilisateur créé avec succès. ';
-        $message .= '⚠️ L\'utilisateur devra changer son mot de passe à sa première connexion.';
+        $message .= 'L\'utilisateur devra changer son mot de passe à sa première connexion.';
 
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
