@@ -25,7 +25,6 @@
     <!-- Contenu principal -->
     <div class="md:ml-64 min-h-screen">
         <!-- Header top -->
-        <!-- Header top -->
         <header class="bg-white shadow">
             <div class="flex items-center justify-between p-4">
                 <div class="flex items-center">
@@ -45,7 +44,7 @@
                         <button @click="open = !open" class="flex items-center space-x-2">
                             {{-- <img src="{{ Auth::user()->photo_url }}" alt="Photo de profil"
                                 class="w-8 h-8 rounded-full object-cover"> --}}
-                            @if (Auth::user()->photo && Storage::exists('public/images/users/' . Auth::user()->photo))
+                            @if (Auth::user()->photo_url)
                                 <img src="{{ Auth::user()->photo_url }}" alt="Photo de profil"
                                     class="w-10 h-10 rounded-full object-cover">
                             @else

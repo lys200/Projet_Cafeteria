@@ -20,5 +20,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+        // Créer le lien symbolique pour les images
+        if (!file_exists(public_path('storage/images'))) {
+            symlink(storage_path('images'), public_path('storage/images'));
+        }
     }
 }

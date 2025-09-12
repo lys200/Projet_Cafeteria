@@ -25,21 +25,6 @@ class ProfileController extends Controller
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
-    // public function update(ProfileUpdateRequest $request): RedirectResponse
-    // {
-    //     $request->user()->fill($request->validated());
-
-    //     if ($request->user()->isDirty('email')) {
-    //         $request->user()->email_verified_at = null;
-    //     }
-
-    //     $request->user()->save();
-
-    //     return Redirect::route('profile.edit')->with('status', 'profile-updated');
-    // }
     public function update(Request $request)
     {
         $user = Auth::user();
@@ -48,11 +33,14 @@ class ProfileController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'bio' => 'nullable|string|max:500',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'current_password' => $user->force_password_change ? 'required' : 'nullable',
             'new_password' => [$user->force_password_change ? 'required' : 'nullable', 'confirmed', Password::min(8)->mixedCase()->numbers()],
         ], [
             'new_password.required' => 'Le nouveau mot de passe est obligatoire pour la première connexion.',
+            'photo.image' => 'Le fichier doit être une image valide.',
+            'photo.mimes' => 'L\'image doit être de type: jpeg, png, jpg, gif ou webp.',
+            'photo.max' => 'L\'image ne doit pas dépasser 2MB.',
         ]);
 
         // Mise à jour des informations de base
@@ -60,16 +48,41 @@ class ProfileController extends Controller
         $user->email = $request->email;
         $user->bio = $request->bio;
 
+        // Gestion de la suppression de photo
+        if ($request->has('delete_photo') && $request->delete_photo == '1') {
+            if ($user->photo) {
+                $oldPhotoPath = 'images/users/' . $user->photo;
+                if (Storage::exists($oldPhotoPath)) {
+                    Storage::delete($oldPhotoPath);
+                }
+                $user->photo = null;
+            }
+        }
+
         // Gestion de la photo
         if ($request->hasFile('photo')) {
-            if ($user->photo && Storage::disk('public')->exists('images/users/' . $user->photo)) {
-                Storage::disk('public')->delete('images/users/' . $user->photo);
-            }
+            try {
+                // Supprimer l'ancienne photo si elle existe
+                if ($user->photo) {
+                    $oldPhotoPath = 'images/users/' . $user->photo;
+                    if (Storage::exists($oldPhotoPath)) {
+                        Storage::delete($oldPhotoPath);
+                    }
+                }
 
-            $photo = $request->file('photo');
-            $photoName = time() . '_' . $photo->getClientOriginalName();
-            $photo->storeAs('public/images/users', $photoName);
-            $user->photo = $photoName;
+                $photo = $request->file('photo');
+                // Générer un nom unique pour l'image
+                $photoName = 'user_' . $user->id . '_' . time() . '.' . $photo->getClientOriginalExtension();
+
+                // Stocker l'image dans le dossier storage/images/users (comme pour les plats)
+                $photo->storeAs('images/users', $photoName);
+
+                // Enregistrer le nom du fichier dans la base de données
+                $user->photo = $photoName;
+
+            } catch (\Exception $e) {
+                return back()->withErrors(['photo' => 'Erreur lors du téléchargement de l\'image: ' . $e->getMessage()]);
+            }
         }
 
         // Mise à jour du mot de passe
@@ -102,6 +115,14 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+
+        // Supprimer la photo de profil si elle existe
+        if ($user->photo) {
+            $photoPath = 'images/users/' . $user->photo;
+            if (Storage::exists($photoPath)) {
+                Storage::delete($photoPath);
+            }
+        }
 
         Auth::logout();
 

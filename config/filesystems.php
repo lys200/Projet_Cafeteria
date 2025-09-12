@@ -32,7 +32,7 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path(''),
+            'root' => storage_path('app'),
             'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
 
@@ -48,6 +48,14 @@ return [
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
+        ],
+        
+        // Pour le stockage comme les plats (storage/images/...)
+        'images' => [
+            'driver' => 'local',
+            'root' => storage_path('images'),
+            'url' => env('APP_URL') . '/storage/images',
+            'visibility' => 'public',
         ],
 
         's3' => [

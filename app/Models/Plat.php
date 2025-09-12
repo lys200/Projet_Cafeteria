@@ -78,6 +78,7 @@ class Plat extends Model
         }
 
         // Image par défaut
-        return asset('images/default-plat.jpg');
+
+        return asset('images/default_plat.jpg');
     }
 }

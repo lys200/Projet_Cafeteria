@@ -34,12 +34,12 @@ Route::resource('plats', PlatController::class)->middleware(['auth']);
 //     Route::get('/plats/{plat}/edit', [PlatController::class, 'edit'])->name('plats.edit');
 // });
 // route pour les ventes
-Route::resource('vente', VenteController::class)->middleware(['auth']);
+// Route::resource('vente', VenteController::class)->middleware(['auth']);
 
 
 
 // route pour les ventes
-Route::resource('vente', VenteController::class);
+Route::resource('ventes', VenteController::class);
 
 // Routes pour le profil utilisateur
 Route::middleware(['auth'])->group(function () {
@@ -65,7 +65,12 @@ Route::get('/clients/{client}/edit', [ClientController::class, 'edit'])->name('c
 Route::put('/clients/{client}', [ClientController::class, 'update'])->name('client.update');
 Route::delete('/clients/{client}', [ClientController::class, 'destroy'])->name('client.destroy');
 
-
+// Routes pour le profil
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
