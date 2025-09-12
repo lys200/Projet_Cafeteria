@@ -45,7 +45,6 @@
                         <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
                     @enderror
                 </div>
-            </div>
 
             <!-- Email -->
             <div>
@@ -58,7 +57,6 @@
             </div>
 
             <!-- Type de client et Téléphone -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Type client -->
                 <div>
                     <label for="type_client" class="block text-sm font-medium text-accent mb-1">Type de Client</label>
@@ -86,10 +84,8 @@
                         <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
                     @enderror
                 </div>
-            </div>
 
             <!-- Nom d'utilisateur et Image -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Nom d'utilisateur -->
                 <div>
                     <label for="username" class="block text-sm font-medium text-accent mb-1">Nom d'utilisateur</label>
@@ -102,14 +98,14 @@
                 </div>
 
                 <!-- Image -->
-                <div>
+                {{-- <div>
                     <label for="image" class="block text-sm font-medium text-accent mb-1">Image (URL)</label>
                     <input type="text" name="image" value="{{ old('image') }}" placeholder="Entrez l'URL de l'image"
                         class="w-full px-4 py-2 border border-accent/50 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition duration-150">
                     @error('image')
                         <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
                     @enderror
-                </div>
+                </div> --}}
             </div>
 
             <!-- Bouton de soumission -->
