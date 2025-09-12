@@ -34,13 +34,13 @@
                     <div class="flex items-center space-x-4">
                         <div class="relative">
                             <div
-                                class="w-20 h-20 rounded-full bg-gray-100 border-2 border-gray-200 flex items-center justify-center overflow-hidden">
+                                class="w-20 h-20 rounded-full bg-primary border-2 border-accent hover:border-accent flex items-center justify-center overflow-hidden">
                                 @if(Auth::user()->photo_url)
                                     <img src="{{ Auth::user()->photo_url }}" alt="Photo actuelle"
                                         class="w-full h-full object-cover" id="photoPreview">
                                 @else
                                     <!-- Icône SVG par défaut -->
-                                    <svg id="photoPreview" class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor"
+                                    <svg id="photoPreview" class="w-10 h-10 text-light" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -108,7 +108,7 @@
             </div>
 
             <!-- Changement de mot de passe -->
-            <div class="border-t border-gray-200 pt-6 mb-6">
+            <div class="border-t border-accent pt-3 mb-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Changer le mot de passe</h3>
 
                 @if(Auth::user()->force_password_change)
@@ -210,7 +210,7 @@
 
                     <div class="flex justify-end space-x-3">
                         <button type="button" onclick="closeDeleteModal()"
-                            class="bg-accent hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded-md">
+                            class="bg-gray-200 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded-md">
                             Annuler
                         </button>
                         <button type="submit"
